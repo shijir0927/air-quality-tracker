@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Air Quality tracker</title>
+    <title>Sky Watcher</title>
     <!-- Ensures that IE and Edge uses the latest version and doesn't emulate an older version -->
     <meta http-equiv="x-ua-compatible" content="IE=Edge">
     <meta charset='utf-8'>
@@ -11,30 +11,191 @@
     <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css">
     <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
     <style>
-        html,
-        body {
+        body, h1, h2, h3, h4, h5, h6, p {
             margin: 0;
+            font-family: 'Open Sans', sans-serif;
         }
+
+        header{
+            width: 100%;
+            height: 50px;
+            padding: 10px 0;
+            background-color: #40b3f4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2b2d42;
+        }
+
+        .header-title{
+            color: #2b2d42;
+            font-size: 30px;
+            line-height: 32px;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-right: 20px;
+        }
+
+        .bm-logo{
+            width: 300px;
+            margin-left: 20px;
+        }
+
         #myMap {
-            height: 100vh;
+            height: calc(100vh - 60px);
             width: 100vw;
+        }
+
+        #info-box, .AQI-title{
+            font-size: 22px;
+            color: #2b2d42;
+        }
+        .info-box-container{
+            position: absolute;
+            bottom: 100px;
+            left: 100px;
+            z-index: 100;
+            width: 300px;
+            height: 170px;
+            background-color: #40b3f4;
+            color: white;
+            padding: 20px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: .85;
+            border: 1px solid #2b2d42;
+        }
+
+        .AQI-index-container{
+            position: absolute;
+            bottom: 100px;
+            right: 100px;
+            z-index: 100;
+            width: 350px;
+            height: 170px;
+            background-color: #40b3f4;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            opacity: .85;
+            border: 1px solid #2b2d42;
+        }
+
+        .AQI-index-row{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 5px 0;
+        }
+
+        .AQI-index-color{
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        .level-5{
+            background-color: #660099;
+        }
+
+        .level-4{
+            background-color: #cc0033;
+        }
+
+        .level-3{
+            background-color: #ff9933;
+        }
+
+        .level-2{
+            background-color: #ffde33;
+        }
+
+        .level-1{
+            background-color: #009966;
+        }
+
+        .condition-row{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        #weather-info-container{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #weather-info div{
+            margin: 8px 0;
+        }
+
+        #weather-value{
+            font-size: 20px;
+            font-weight: 500;
+        }
+        .popup-content-container{
+            opacity: .85;
         }
     </style>
 </head>
+
 <body>
+
+    <header>
+        <img src = "https://1oj61m3rln3bdse82pw7b343-wpengine.netdna-ssl.com/wp-content/uploads/2019/12/breathe_mongolia_logo-dark-1.svg" alt ="MB-logo" class="bm-logo"/>
+        <h1 class="header-title">Project Skywatcher</h1>
+    </header>
+
     <div id="myMap"></div>
+    <div class="info-box-container" id="info-box-container">
+        <p id="info-box"></p>
+        <div id="weather-info-container">
+            <div id="weather-info"></div>
+            <div id="weather-value"></div>
+        </div>
+    </div>
+    <div class="AQI-index-container">
+        <div>
+            <div class="AQI-index-row">
+                <p class="AQI-title">AQI Index Table</p>
+            </div>
+            <div class="AQI-index-row">
+                <div class=" AQI-index-color level-5"></div>
+                <p>300μg/m3 - Hazardous</p>
+            </div>
+
+            <div class="AQI-index-row">
+                <div class=" AQI-index-color level-4"></div>
+                <p>200μg/m3 - Very Unhealthy</p>
+            </div>
+
+            <div class="AQI-index-row">
+                <div class=" AQI-index-color level-3"></div>
+                <p>150μg/m3 - Unhealthy</p>
+            </div>
+
+            <div class="AQI-index-row">
+                <div class=" AQI-index-color level-2"></div>
+                <p>100μg/m3 - Unhealhty for sensitive groups</p>
+            </div>
+
+            <div class="AQI-index-row">
+                <div class=" AQI-index-color level-1"></div>
+                <p>50μg/m3 - Moderate</p>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript">
+
         window.addEventListener("DOMContentLoaded", function () {
             // Pick a pre-defined location of Ulaanbaatar
             map_center = [106.905744, 47.886399]
-
-            // Get the users location if permitted - they will be asked for permission before we can get their location
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    map_center = [position.coords.longitude, position.coords.latitude]
-                })
-            }
-
+            curr_info = {}
             //Create an instance of the map control using the map key from the Flask app
             var map = new atlas.Map('myMap', {
                 authOptions: {
@@ -43,48 +204,145 @@
                 }
             });
 
-        // when the map is ready, center the map on the users location
-        map.events.add('ready', function () {
-            // Declare a data source for the AQI data
-            var datasource = new atlas.source.DataSource();
-            map.sources.add(datasource);
-
-            // Declare a function to update the AQI data
-            function updateAQIData(e) {
-                // Get the current bounds on screen
-                bounds = map.getCamera().bounds
-
-                // Set the data source data to results of the aqi call
-                // This is a feature collection with the AQI measurements
-                fetch('./aqi?bounds=' + bounds)
-                    .then(res => {
-                        return res.json()
-                    }).then(response => {
-                        datasource.clear()
-                        datasource.setShapes(response)
-                    })
+            async function get_weather_info(search){
+                fetch('./weather?search=' + search)
+                        .then(res => {
+                            return res.json()
+                        }).then(response => {
+                            return response
+                        })
             }
 
-            // Add a bubble layer
-            map.layers.add(new atlas.layer.BubbleLayer(datasource, null, {
-                radius: 10,
-                opacity: 0.5,
-                strokeOpacity: 0,
-                // Get the color from the color property
-                color: ['get', 'color']
-            }));
+            async function build_info_box(){
+                let response = await fetch('./here');
 
-            // Handle any events that change the bounds of the map
-            map.events.add('zoomend', updateAQIData)
-            map.events.add('dragend', updateAQIData)
-            map.events.add('pitchend', updateAQIData)
+                if(!response.ok){
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                } else{
+                    let res = await response.json();
+                    let weatherReq = await fetch('./weather?search=' + `${res.data.city.name.split(",")[0]},${res.data.city.name.split(",")[2]}`)
 
-            map.setCamera({
-                center: map_center,
-                zoom: 5
+                    if(!weatherReq.ok){
+                        throw new Error(`HTTP error! status: ${weatherReq.status}`);
+                    }else{
+                        let weather = await weatherReq.json();
+                        curr_info = res.data;
+                        console.log(res.data)
+
+                        const info_box = document.getElementById("info-box");
+                        const info_box_container = document.getElementById("info-box-container");
+                        const weather_info = document.getElementById("weather-info");
+                        const weather_info_container = document.getElementById("weather-info-container");
+                        const weather_value = document.getElementById("weather-value");
+
+                        info_box.append(`AQI in ${res.data.city.name} is ${res.data.aqi} μg/m3`)
+                        weather_value.append(`${weather.current.temp_f} F`)
+                        console.log(weather)
+                        let humidity = document.createElement("div");
+                        let wind = document.createElement("div");
+                        let pressure = document.createElement("div");
+                        let condition = document.createElement("div");
+                        let condition_text = document.createElement("p");
+                        let condition_icon = document.createElement("img");
+
+                        condition_icon.src = weather.current.condition.icon;
+                        condition_text.append(`${weather.current.condition.text}`);
+
+                        condition.classList.add("condition-row");
+                        condition.appendChild(condition_icon);
+                        condition.appendChild(condition_text);
+
+                        humidity.append(`Humidity: ${weather.current.humidity}%`);
+                        wind.append(`Wind: ${weather.current.wind_mph}mmp/h`);
+                        pressure.append(`Pressure: ${weather.current.pressure_mb}mb`);
+
+                        weather_info_container.appendChild(condition);
+                        weather_info.appendChild(humidity);
+                        weather_info.appendChild(wind);
+                        weather_info.appendChild(pressure);
+                    }
+                    
+                }
+            }
+
+
+            // when the map is ready, center the map on the users location
+            map.events.add('ready', function () {
+
+                build_info_box();
+                //Create a reusable popup.
+                popup = new atlas.Popup();
+
+                // Declare a data source for the AQI data
+                var datasource = new atlas.source.DataSource();
+                map.sources.add(datasource);
+
+                // Declare a function to update the AQI data
+                function updateAQIData(e) {
+                    // Get the current bounds on screen
+                    bounds = map.getCamera().bounds
+                    // Set the data source data to results of the aqi call
+                    // This is a feature collection with the AQI measurements
+                    fetch('./aqi?bounds=' + bounds)
+                        .then(res => {
+                            return res.json()
+                        }).then(response => {
+                            console.log(response)
+                            datasource.clear()
+                            datasource.setShapes(response)
+                        })
+                }
+                let clusterBubbleLayer = new atlas.layer.BubbleLayer(datasource, null, {
+                    radius: 10,
+                    opacity: 0.5,
+                    strokeOpacity: 0,
+                    // Get the color from the color property
+                    color: ['get', 'color']
+                })
+                // Add a bubble layer
+                map.layers.add(clusterBubbleLayer);
+
+                //Add a click event to the layer so a popup can be displayed to show details about the cluster.
+                map.events.add('mouseover', clusterBubbleLayer, clusterClicked);
+                map.events.add('mouseleave', clusterBubbleLayer, function(){
+                    popup.close();
+                })
+                // Handle any events that change the bounds of the map
+                map.events.add('zoomend', updateAQIData)
+                map.events.add('dragend', updateAQIData)
+                map.events.add('pitchend', updateAQIData)
+
+                map.setCamera({
+                    center: map_center,
+                    zoom: 11
+                })
             })
+
+
+            function clusterClicked(e) {
+                console.log(e.shapes[0].data.properties.aqi)
+                if (e.shapes[0]) {
+                    //Get the clustered point from the event.
+                    let cluster = e.shapes[0];
+                    let AQI_comparison = Math.round(Number(e.shapes[0].data.properties.aqi)/Number(curr_info.aqi)*10)/10
+                    let html = ['<div style="padding:15px 10px;">'];
+
+                    html.push(`The AQI is ${e.shapes[0].data.properties.aqi} (${AQI_comparison} times higher than your current location)</div>`);
+
+                    //Update the options of the popup and open it on the map.
+                    popup.setOptions({
+                        position: e.position,
+                        content: html.join(''),
+                        closeButton: false,
+                        fillColor: "#40b3f4"
+                    });
+
+                    popup.open(map);
+                }
+            }
         })
-        })
+
+        
     </script>
 </body>
 </html>
