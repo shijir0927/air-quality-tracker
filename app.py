@@ -4,10 +4,10 @@ from flask import Flask, render_template, request
 import requests
 
 # Load the Azure Maps key from the .env file
-MAP_KEY = os.environ["MAP_KEY"]
+MAP_KEY = "F6N4grXV8He3RimiYXHB6ztl3kek-kCn7ocuDjVzvAM"
 
 # Load the WAQI
-WAQI_API_KEY = os.environ["WAQI_API_KEY"]
+WAQI_API_KEY = "862e50d3dc7249b66edbae155621152d005833c8"
 WAQI_API_URL = "https://api.waqi.info/map/bounds/?latlng={},{},{},{}&token={}"
 WAQI_API_BASE_URL = "https://api.waqi.info/feed/here/?token={}"
 WEATHER_URL = "http://api.weatherapi.com/v1/current.json?key=30e5923990c74026815164016200112&q={}"
