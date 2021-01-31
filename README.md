@@ -36,4 +36,4 @@ To run the project locally, you need:
 Feel free to contribute to this project. Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)w
+[MIT](https://choosealicense.com/licenses/mit/)
