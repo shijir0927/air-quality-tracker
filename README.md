@@ -2,10 +2,17 @@
 
 Project Sky Watcher is a collaborative platform that uses affordable embedded Iot devices to calculate air qualities around Mongolia aiming to allow citizen led actions and collaborate with other organizations about air quality issues.
 
-[DEMO](https://skywatcher.azurewebsites.net/)
-Click here to see it in live action!
+## Demo
+
+This demo shows Mongolia's live Air pollution data coming from our sensors placed indoor and outdoor. Using the users connection IP address, we show the comparison between user's current AQI index and toggled location. 
+
+Click [here](https://skywatcher.azurewebsites.net/) to see it in live action!
 
 ![project-sky-watcher](assets/project-skywatcher.png)
+
+## IoT Devices
+
+The air pollution sensor devices were created by our team member [Baagii](https://ieeexplore.ieee.org/author/37088549561) at BYU last year. You can find more information about our sensors [here](https://ieeexplore.ieee.org/document/9249214/authors#authors)
 
 ## Installation
 
