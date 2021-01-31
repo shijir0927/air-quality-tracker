@@ -4,7 +4,7 @@ Project Sky Watcher is a collaborative platform that uses affordable embedded Io
 
 [DEMO](https://skywatcher.azurewebsites.net/)
 
-![project-sky-watcher](asstes/project-skywatcher.png)
+![project-sky-watcher](assets/project-skywatcher.png)
 
 ## Installation
 
