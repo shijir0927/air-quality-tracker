@@ -12,7 +12,7 @@ Click [here](https://skywatcher.azurewebsites.net/) to see it in live action!
 
 ## IoT Devices
 
-The air pollution sensor devices were created by our team member [Baagii](https://ieeexplore.ieee.org/author/37088549561) at BYU last year. You can find more information about our sensors [here](https://ieeexplore.ieee.org/document/9249214/authors#authors).
+We use Microsoft IoTHub to handle the data coming from sensors in Mongolia. The air pollution sensor devices were created by our team member [Baagii](https://ieeexplore.ieee.org/author/37088549561) at BYU last year. You can find more information about our sensors [here](https://ieeexplore.ieee.org/document/9249214/authors#authors).
 
 ## Installation
 
