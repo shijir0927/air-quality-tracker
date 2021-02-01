@@ -4,7 +4,7 @@ Project Sky Watcher is a collaborative platform that uses affordable embedded Io
 
 ## Demo
 
-This demo shows Mongolia's live Air pollution data coming from our sensors placed indoor and outdoor. Using the users connection IP address, we show the comparison between user's current AQI index and toggled location. 
+This demo shows Mongolia's live Air pollution data coming from our sensors placed indoor and outdoor. Using the users connected IP address, we show the comparison between user's current geolocation AQI and designated Mongolia's location to demonstrate how much degree difference in air pollution. 
 
 Click [here](https://skywatcher.azurewebsites.net/) to see it in live action!
 
